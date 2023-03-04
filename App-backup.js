@@ -3,17 +3,19 @@ import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
 
 function Login({ navigation }) {
   return (
     <View style={styles.container}>
+      <Text>Login</Text>
       <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
         <Text>SignUp</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Tab")}>
+        <Text>Tab</Text>
       </TouchableOpacity>
     </View>
   );
@@ -22,11 +24,8 @@ function Login({ navigation }) {
 function SignUp({ navigation }) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("DrawerInStack", { screen: "Login" })
-        }
-      >
+      <Text>SignUp</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Text>Login</Text>
       </TouchableOpacity>
     </View>
@@ -35,42 +34,42 @@ function SignUp({ navigation }) {
 
 function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <View>
       <Text>Home</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text>Log out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 function NotificationsScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <View>
       <Text>NotificationsScreen</Text>
     </View>
   );
 }
 
-function DrawerInStack() {
+function Tab() {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen
+    <BottomTab.Navigator>
+      <BottomTab.Screen name="Home" component={HomeScreen} />
+      <BottomTab.Screen
         name="NotificationsScreen"
         component={NotificationsScreen}
       />
-    </Drawer.Navigator>
+    </BottomTab.Navigator>
   );
 }
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen
-          name="DrawerInStack"
-          component={DrawerInStack}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="Tab" component={Tab} />
       </Stack.Navigator>
     </NavigationContainer>
   );
